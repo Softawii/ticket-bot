@@ -1,3 +1,5 @@
+package listener
+
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.events.GenericEvent
@@ -21,7 +23,7 @@ class ReadyListener: EventListener {
 
     override fun onEvent(event: GenericEvent) {
         if (event is ReadyEvent) {
-            println("API is ready!\n"+getInviteLink(event.jda))
+            println("API is ready!\n"+ getInviteLink(event.jda))
         }
     }
 }

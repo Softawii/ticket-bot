@@ -1,4 +1,6 @@
-import ReadyListener.Companion.getInviteLink
+package listener
+
+import listener.ReadyListener.Companion.getInviteLink
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.User
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
