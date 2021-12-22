@@ -21,14 +21,18 @@ class TicketBot {
                 .addEventListeners(MessageListener())
                 .build()
 
-            jda.upsertCommand("help", "Ajuda").queue();
-            jda.upsertCommand("ping", "Pong").queue();
-            jda.upsertCommand("invite", "Convite do bot").queue();
-            val createNewTicket = CommandData("createticket", "Cria um novo ticket")
-            jda.upsertCommand(createNewTicket).queue()
-            val changeticket = CommandData("changeticket", "Troca para um ticket já existente")
-            changeticket.addOption(OptionType.INTEGER, "ticket_id", "Ticket ID")
-            jda.upsertCommand(changeticket).queue()
+            jda.updateCommands()
+                .addCommands(CommandData("help", "Ajuda"))
+                .addCommands(CommandData("ping", "Pong"))
+                .addCommands(CommandData("invite", "Convite do bot"))
+                .addCommands(CommandData("create-ticket", "Cria um novo ticket"))
+                .addCommands(CommandData("change-ticket", "Troca para um ticket já existente")
+                    .addOption(OptionType.INTEGER, "ticket-id", "Ticket ID"))
+                .addCommands(CommandData("archive-ticket", "Arquiva um ticket já existente")
+                    .addOption(OptionType.INTEGER, "ticket-id", "Ticket ID"))
+                .addCommands(CommandData("archive-current-ticket", "Arquiva um ticket já existente"))
+            .queue()
+
             jda.awaitReady()
         }
 
@@ -37,7 +41,7 @@ class TicketBot {
             reader.use {
                 val propertiesFile = Properties()
                 propertiesFile.load(reader)
-                properties["discordToken"] = propertiesFile["discordToken"] as String
+                properties["discordToken"] = propertiesFile["discord.token"] as String
             }
         }
     }
