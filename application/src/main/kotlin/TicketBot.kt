@@ -33,6 +33,8 @@ class TicketBot {
                 .addCommands(CommandData("archive-ticket", "Arquiva um ticket já existente")
                     .addOptions(ticketId))
                 .addCommands(CommandData("archive-current-ticket", "Arquiva um ticket já existente"))
+                .addCommands(CommandData("send-message", "Envia uma mensagem para um ticket")
+                    .addOptions(ticketId))
             .queue()
 
             jda.awaitReady()
