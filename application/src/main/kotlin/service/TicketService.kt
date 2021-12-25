@@ -1,9 +1,8 @@
 package service
 
 interface TicketService {
-    fun archiveTicket(userId: Long, ticketId: Long): String
-    fun archiveCurrentTicket(userId: Long): String
-    fun activeTicket(userId: Long): String
-    fun createTicket(userId: Long): String
-    fun createUser(userId: Long): String
+    fun archiveTicket(platformId: Long, ticketId: Long): String
+    fun archiveCurrentTicket(platformId: Long): String
+    fun activeTicket(platformId: Long): String
+    fun createTicket(platformId: Long): String
 }
