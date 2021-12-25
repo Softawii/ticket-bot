@@ -5,4 +5,5 @@
 </div>
 -->
 
-Pequena introdução sobre as boas práticas no código.
+#### Tópicos Importantes: 
+1. [Documentação e Comentários](https://kotlinlang.org/docs/kotlin-doc.html)
