@@ -1,7 +1,7 @@
 package entity
 
-data class Client(
-    val id:Long,
-    val discordId:Long,
-    val activeTicket:Ticket
+class Client(
+    var id: Long?,
+    var discordId:Long,
+    var activeTicket: Ticket?
 )
