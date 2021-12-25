@@ -22,7 +22,7 @@ class TicketBot {
                 .addEventListeners(MessageListener())
                 .build()
 
-            val ticketId = OptionData(OptionType.INTEGER, "ticket-id", "Ticket ID")
+            val ticketId = OptionData(OptionType.INTEGER, "ticket-id", "Ticket ID", true)
             jda.updateCommands()
                 .addCommands(CommandData("help", "Ajuda"))
                 .addCommands(CommandData("ping", "Pong"))
@@ -35,6 +35,7 @@ class TicketBot {
                 .addCommands(CommandData("archive-current-ticket", "Arquiva um ticket já existente"))
                 .addCommands(CommandData("send-message", "Envia uma mensagem para um ticket")
                     .addOptions(ticketId))
+                .addCommands(CommandData("active-ticket", "Informa o ticket ativo"))
             .queue()
 
             jda.awaitReady()
