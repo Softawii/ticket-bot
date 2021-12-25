@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import net.dv8tion.jda.api.interactions.Interaction
 import net.dv8tion.jda.api.interactions.commands.OptionMapping
+import org.apache.logging.log4j.LogManager
 import service.DiscordTicketService
 import service.TicketService
 
@@ -17,6 +18,7 @@ class MessageListener: ListenerAdapter() {
     private val ticketService:TicketService = DiscordTicketService
 
     companion object {
+        val LOGGER = LogManager.getLogger(Companion::class.java)
         private fun checkIfPrivateChannel(event: Interaction): Boolean {
             return if (event.channelType != ChannelType.PRIVATE) {
                 event.reply("Só é possível criar um ticket pelas mensagens diretas").queue()

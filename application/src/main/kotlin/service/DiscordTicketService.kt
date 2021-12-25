@@ -1,6 +1,10 @@
 package service
 
+import org.apache.logging.log4j.LogManager
+
 object DiscordTicketService:TicketService {
+
+    val LOGGER = LogManager.getLogger(DiscordTicketService.javaClass)
 
     private val database: Database = FakeDatabase
 

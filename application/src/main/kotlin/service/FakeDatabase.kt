@@ -2,10 +2,14 @@ package service
 
 import entity.Client
 import entity.Ticket
+import org.apache.logging.log4j.LogManager
 import java.util.*
 import kotlin.collections.ArrayList
 
 object FakeDatabase:Database {
+
+    val LOGGER = LogManager.getLogger(FakeDatabase.javaClass)
+
     private val tickets:MutableList<Ticket> = ArrayList()
     private val clients:MutableList<Client> = ArrayList()
 

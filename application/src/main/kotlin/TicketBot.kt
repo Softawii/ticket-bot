@@ -4,12 +4,14 @@ import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.interactions.commands.OptionType
 import net.dv8tion.jda.api.interactions.commands.build.CommandData
 import net.dv8tion.jda.api.interactions.commands.build.OptionData
+import org.apache.logging.log4j.LogManager
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
 
 class TicketBot {
     companion object {
+        val LOGGER = LogManager.getLogger(Companion::class.java)
         private var properties: MutableMap<String, String> = HashMap()
         fun start() {
             processPropertiesFile()

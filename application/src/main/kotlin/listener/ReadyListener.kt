@@ -5,11 +5,13 @@ import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.events.GenericEvent
 import net.dv8tion.jda.api.events.ReadyEvent
 import net.dv8tion.jda.api.hooks.EventListener
+import org.apache.logging.log4j.LogManager
 
 
 class ReadyListener: EventListener {
 
     companion object {
+        val LOGGER = LogManager.getLogger(Companion::class.java)
         fun getInviteLink(jda: JDA): String {
             val clientId = jda.selfUser.idLong
             val permission: Int = Permission.MESSAGE_SEND.offset

@@ -1,8 +1,14 @@
 package listener.processing
 
 import entity.Ticket
+import org.apache.logging.log4j.LogManager
 
 class DiscordReceiver:Receiver {
+
+    companion object {
+        val LOGGER = LogManager.getLogger(Companion::class.java)
+    }
+
     override fun processMessage(ticketId: Long): Boolean {
         TODO("Not yet implemented")
     }
