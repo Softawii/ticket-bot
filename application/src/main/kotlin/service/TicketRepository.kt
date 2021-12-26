@@ -40,19 +40,12 @@ class TicketRepository private constructor() : Repository<Ticket> {
 
     override fun save(entity: Ticket): Ticket {
         val entityManager = sessionFactory.createEntityManager()
-        val client: Client
-        // Query for client
-        val query = entityManager.createQuery("SELECT c FROM Client c WHERE id = ?1")
-        query.setParameter(1, entity.client!!.id).setMaxResults(1)
-        try {
-            client = query.singleResult as Client
-        // Nao achou um client! WTF??????
-        } catch(E: NoResultException) {
-            LOGGER.fatal("Client '${entity.client!!.id}' doesn't exist and tried to create a ticket.")
-            throw RuntimeException("Client '${entity.client!!.id}' doesn't exist and tried to create a ticket.")
-        }
 
-        entity.client = client
+        if (entity.client == null) {
+            throw RuntimeException("Client is missing to create a ticket")
+        } else if (entity.client!!.id == null) {
+            throw RuntimeException("Client ID is missing to create a ticket")
+        }
 
         entityManager.transaction.begin()
         entityManager.persist(entity)
