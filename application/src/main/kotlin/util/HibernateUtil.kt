@@ -3,7 +3,6 @@ package util
 import entity.Client
 import entity.Message
 import entity.Ticket
-import entity.*
 import org.hibernate.SessionFactory
 import org.hibernate.boot.registry.StandardServiceRegistry
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder
@@ -20,6 +19,7 @@ class HibernateUtil private constructor() {
                 .addAnnotatedClass(Client::class.java)
                 .addAnnotatedClass(Message::class.java)
                 .addAnnotatedClass(Ticket::class.java)
+                .addProperties(PropertiesUtil.properties)
             serviceRegistry = StandardServiceRegistryBuilder().applySettings(configuration.properties).build()
             sessionFactory = configuration.buildSessionFactory(serviceRegistry)
             return HibernateUtil()
