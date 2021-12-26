@@ -8,10 +8,14 @@ class Ticket(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
+
     @ManyToOne
     var client: Client?,
-    @OneToMany(cascade = [CascadeType.MERGE])
+
+    @OneToMany(mappedBy = "ticket", cascade = [CascadeType.MERGE], fetch = FetchType.LAZY)
     var messages: MutableList<Message> = ArrayList(),
+
+    @Column
     var isArchived: Boolean = false
 ) {
 

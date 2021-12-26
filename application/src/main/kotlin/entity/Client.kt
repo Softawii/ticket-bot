@@ -8,10 +8,14 @@ data class Client(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
+
+    @Column
     var discordId:Long?,
+
     @OneToOne(cascade = [CascadeType.MERGE])
     var activeTicket: Ticket?,
-    @OneToMany(cascade = [CascadeType.MERGE])
+
+    @OneToMany(mappedBy = "client", cascade = [CascadeType.MERGE], fetch = FetchType.LAZY)
     var tickets: MutableList<Ticket>?
 ) {
     constructor() : this(null,null,null,null)
