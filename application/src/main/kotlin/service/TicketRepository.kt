@@ -57,7 +57,16 @@ class TicketRepository private constructor() : Repository<Ticket> {
     }
 
     override fun update(entity: Ticket): Ticket {
-        TODO("Not yet implemented")
+        val session = sessionFactory.currentSession
+        session.transaction.begin()
+
+        val mergedEntity = session.merge(entity) as Ticket
+
+        session.flush()
+        session.transaction.commit()
+        session.close()
+
+        return mergedEntity
     }
 
 }
