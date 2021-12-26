@@ -1,9 +1,14 @@
 package service
 
+import entity.Client
 import entity.Ticket
+import listener.MessageListener
+import org.apache.logging.log4j.LogManager
 import org.hibernate.SessionFactory
 import util.HibernateUtil
+import java.lang.RuntimeException
 import java.util.*
+import javax.persistence.NoResultException
 
 class TicketRepository private constructor() : Repository<Ticket> {
 
@@ -12,6 +17,7 @@ class TicketRepository private constructor() : Repository<Ticket> {
     companion object {
         @Volatile
         private var INSTANCE: TicketRepository? = null
+        private val LOGGER = LogManager.getLogger(MessageListener::class.java)
 
         fun getInstance(): TicketRepository =
             INSTANCE ?: synchronized(this) {
@@ -34,12 +40,25 @@ class TicketRepository private constructor() : Repository<Ticket> {
 
     override fun save(entity: Ticket): Ticket {
         val entityManager = sessionFactory.createEntityManager()
-        entityManager.transaction.begin();
-        val persistEntity = entityManager.merge(entity);
-        entityManager.persist(persistEntity);
-        entityManager.flush();
-        entityManager.transaction.commit();
-        entityManager.close();
+        val client: Client
+        // Query for client
+        val query = entityManager.createQuery("SELECT c FROM Client c WHERE id = ?1")
+        query.setParameter(1, entity.client!!.id).setMaxResults(1)
+        try {
+            client = query.singleResult as Client
+        // Nao achou um client! WTF??????
+        } catch(E: NoResultException) {
+            LOGGER.fatal("Client '${entity.client!!.id}' doesn't exist and tried to create a ticket.")
+            throw RuntimeException("Client '${entity.client!!.id}' doesn't exist and tried to create a ticket.")
+        }
+
+        entity.client = client
+
+        entityManager.transaction.begin()
+        entityManager.persist(entity)
+        entityManager.flush()
+        entityManager.transaction.commit()
+        entityManager.close()
         return entity
     }
 
