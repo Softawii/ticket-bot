@@ -9,17 +9,12 @@
         <property name="hibernate.format_sql">true</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres</property>
-        <property name="hibernate.connection.username">USERNAME</property>
-        <property name="hibernate.connection.password">PASSWORD</property>
+<!--        <property name="hibernate.connection.username">USERNAME</property>-->
+<!--        <property name="hibernate.connection.password">PASSWORD</property>-->
         <property name="hibernate.connection.pool_size">1</property>
         <property name="hibernate.current_session_context_class">thread</property>
 
         <property name="hbm2ddl.auto">create</property>
         <property name="show_sql">true</property>
-
-        <property name="hibernate.archive.autodetection">class, hbm</property>
-        <mapping class="entity.Client" />
-        <mapping class="entity.Message" />
-        <mapping class="entity.Ticket" />
     </session-factory>
 </hibernate-configuration>

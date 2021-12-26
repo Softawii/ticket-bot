@@ -5,21 +5,17 @@ import net.dv8tion.jda.api.interactions.commands.OptionType
 import net.dv8tion.jda.api.interactions.commands.build.CommandData
 import net.dv8tion.jda.api.interactions.commands.build.OptionData
 import org.apache.logging.log4j.LogManager
-import java.nio.file.Files
-import java.nio.file.Path
-import java.util.*
+import util.PropertiesUtil
 
 class TicketBot {
     companion object {
         val LOGGER = LogManager.getLogger(Companion::class.java)
-        private var properties: MutableMap<String, String> = HashMap()
         fun start() {
-            processPropertiesFile()
             startJDA()
         }
 
         private fun startJDA() {
-            val jda = JDABuilder.createDefault(properties["discordToken"])
+            val jda = JDABuilder.createDefault(PropertiesUtil.properties["discord.token"] as String?)
                 .addEventListeners(ReadyListener())
                 .addEventListeners(MessageListener())
                 .build()
@@ -41,15 +37,6 @@ class TicketBot {
             .queue()
 
             jda.awaitReady()
-        }
-
-        private fun processPropertiesFile() {
-            val reader = Files.newBufferedReader(Path.of("./application.properties"))
-            reader.use {
-                val propertiesFile = Properties()
-                propertiesFile.load(reader)
-                properties["discordToken"] = propertiesFile["discord.token"] as String
-            }
         }
     }
 }

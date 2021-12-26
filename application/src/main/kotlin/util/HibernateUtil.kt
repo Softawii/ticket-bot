@@ -3,6 +3,7 @@ package util
 import entity.Client
 import entity.Message
 import entity.Ticket
+import entity.*
 import org.hibernate.SessionFactory
 import org.hibernate.boot.registry.StandardServiceRegistry
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder
