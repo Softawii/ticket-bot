@@ -62,4 +62,8 @@ class TicketRepository private constructor() : Repository<Ticket> {
         return entity
     }
 
+    override fun update(entity: Ticket): Ticket {
+        TODO("Not yet implemented")
+    }
+
 }

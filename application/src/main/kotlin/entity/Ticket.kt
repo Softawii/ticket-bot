@@ -8,9 +8,9 @@ class Ticket(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne
     var client: Client?,
-    @OneToMany(mappedBy = "ticket", cascade = [CascadeType.ALL])
+    @OneToMany(cascade = [CascadeType.MERGE])
     var messages: MutableList<Message> = ArrayList(),
     var isArchived: Boolean = false
 ) {

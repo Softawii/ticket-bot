@@ -35,14 +35,29 @@ class ClientRepository private constructor() : Repository<Client> {
 
     override fun save(entity: Client): Client {
         val session = sessionFactory.currentSession
-        session.transaction.begin();
-        val entityId = session.save(entity) as Long;
-        session.flush();
-        session.transaction.commit();
-        session.close();
+        session.transaction.begin()
+        val entityId = session.save(entity) as Long
+        session.flush()
+        session.transaction.commit()
+        session.close()
         entity.id = entityId
+
         return entity
     }
+
+    override fun update(entity: Client): Client {
+        val session = sessionFactory.currentSession
+        session.transaction.begin()
+
+        val mergedEntity = session.merge(entity) as Client
+
+        session.flush()
+        session.transaction.commit()
+        session.close()
+
+        return mergedEntity
+    }
+
 
     fun findByDiscordId(discordId: Long): Optional<Client> {
         return try {
@@ -54,5 +69,6 @@ class ClientRepository private constructor() : Repository<Client> {
             Optional.empty()
         }
     }
+
 
 }

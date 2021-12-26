@@ -35,12 +35,16 @@ class MessageRepository private constructor(entityFactory: EntityManagerFactory)
 
     override fun save(entity: Message): Message {
         val entityManager = sessionFactory.createEntityManager()
-        entityManager.transaction.begin();
-        entityManager.persist(entity);
-        entityManager.flush();
-        entityManager.transaction.commit();
-        entityManager.close();
+        entityManager.transaction.begin()
+        entityManager.persist(entity)
+        entityManager.flush()
+        entityManager.transaction.commit()
+        entityManager.close()
         return entity
+    }
+
+    override fun update(entity: Message): Message {
+        TODO("Not yet implemented")
     }
 
 }
