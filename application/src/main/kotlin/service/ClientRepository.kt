@@ -1,6 +1,7 @@
 package service
 
 import entity.Client
+import entity.Ticket
 import org.hibernate.SessionFactory
 import util.HibernateUtil
 import java.util.*
@@ -68,6 +69,26 @@ class ClientRepository private constructor() : Repository<Client> {
         } catch (e: NoResultException) {
             Optional.empty()
         }
+    }
+
+    /**
+     * Create a new client and a ticket in the same transaction
+     */
+    fun createNewClient(entity: Client): Client {
+        val session = sessionFactory.currentSession
+        session.transaction.begin()
+
+        val ticket = Ticket(null, entity)
+        entity.activeTicket = ticket
+        val entityId = session.save(entity) as Long
+        val ticketId = session.save(ticket) as Long
+        entity.id = entityId
+        ticket.id = ticketId
+
+        session.flush()
+        session.transaction.commit()
+        session.close()
+        return entity
     }
 
 

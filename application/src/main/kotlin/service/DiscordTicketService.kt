@@ -56,15 +56,14 @@ object DiscordTicketService:TicketService {
         val clientOptional = clientRepository.findByDiscordId(platformId)
         val client: Client
         if (clientOptional.isEmpty) {
-            client = clientRepository.save(Client(null, platformId, null, null))
+            client = clientRepository.createNewClient(Client(null, platformId, null, null))
+            val ticket = client.activeTicket!!
+            return "O seu novo ticket tem o ID: ${ticket.id}. Para enviar alguma mensagem para esse ticket utilize `/send-message ${ticket.id} MENSAGEM`"
         } else {
             client = clientOptional.get()
         }
+
         val ticket = ticketRepository.save(Ticket(null, client))
-
-        // After create the ticket we will set it as the current
-        // TODO: Criar cliente e ticket na mesma transação
-
         client.activeTicket = ticket
         clientRepository.update(client)
 
