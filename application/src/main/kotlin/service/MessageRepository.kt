@@ -27,6 +27,7 @@ class MessageRepository private constructor(entityFactory: EntityManagerFactory)
         return Optional.ofNullable(query.singleResult as Message)
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun findAll(): List<Message> {
         val entityManager = sessionFactory.createEntityManager()
         val query = entityManager.createQuery("SELECT c FROM Client c")

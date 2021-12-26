@@ -28,6 +28,7 @@ class ClientRepository private constructor() : Repository<Client> {
         return Optional.ofNullable(query.singleResult as Client)
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun findAll(): List<Client> {
         val entityManager = sessionFactory.createEntityManager()
         val query = entityManager.createQuery("SELECT c FROM Client c")

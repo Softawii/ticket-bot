@@ -32,6 +32,7 @@ class TicketRepository private constructor() : Repository<Ticket> {
         return Optional.ofNullable(query.singleResult as Ticket)
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun findAll(): List<Ticket> {
         val entityManager = sessionFactory.createEntityManager()
         val query = entityManager.createQuery("SELECT t FROM Ticket t")
