@@ -3,7 +3,7 @@ package entity
 import javax.persistence.*
 
 @Entity
-@Table(name = "client")
+@Table(name = "Client")
 data class Client(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,7 +11,7 @@ data class Client(
     var discordId:Long?,
     @OneToOne(cascade = [CascadeType.ALL])
     var activeTicket: Ticket?,
-    @OneToMany(mappedBy = "client", cascade = [CascadeType.ALL])
+    @OneToMany(cascade = [CascadeType.ALL])
     var tickets: MutableList<Ticket>?
 ) {
     constructor() : this(null,null,null,null)

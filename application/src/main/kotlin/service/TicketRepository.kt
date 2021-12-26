@@ -35,7 +35,8 @@ class TicketRepository private constructor() : Repository<Ticket> {
     override fun save(entity: Ticket): Ticket {
         val entityManager = sessionFactory.createEntityManager()
         entityManager.transaction.begin();
-        entityManager.persist(entity);
+        val persistEntity = entityManager.merge(entity);
+        entityManager.persist(persistEntity);
         entityManager.flush();
         entityManager.transaction.commit();
         entityManager.close();

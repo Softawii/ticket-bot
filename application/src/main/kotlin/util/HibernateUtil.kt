@@ -1,5 +1,8 @@
 package util
 
+import entity.Client
+import entity.Message
+import entity.Ticket
 import org.hibernate.SessionFactory
 import org.hibernate.boot.registry.StandardServiceRegistry
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder
@@ -13,6 +16,9 @@ class HibernateUtil private constructor() {
         private fun init(): HibernateUtil {
             val configuration = Configuration()
             configuration.configure()
+                .addAnnotatedClass(Client::class.java)
+                .addAnnotatedClass(Message::class.java)
+                .addAnnotatedClass(Ticket::class.java)
             serviceRegistry = StandardServiceRegistryBuilder().applySettings(configuration.properties).build()
             sessionFactory = configuration.buildSessionFactory(serviceRegistry)
             return HibernateUtil()

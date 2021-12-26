@@ -4,6 +4,7 @@ import entity.Client
 import org.hibernate.SessionFactory
 import util.HibernateUtil
 import java.util.*
+import javax.persistence.*
 
 class ClientRepository private constructor() : Repository<Client> {
 
@@ -44,10 +45,14 @@ class ClientRepository private constructor() : Repository<Client> {
     }
 
     fun findByDiscordId(discordId: Long): Optional<Client> {
-        val entityManager = sessionFactory.createEntityManager()
-        val query = entityManager.createQuery("SELECT c FROM Client c WHERE discordId = ?1").setMaxResults(1)
-        query.setParameter(1, discordId)
-        return Optional.ofNullable(query.singleResult as Client)
+        return try {
+            val entityManager = sessionFactory.createEntityManager()
+            val query = entityManager.createQuery("SELECT c FROM Client c WHERE discordId = ?1").setMaxResults(1)
+            query.setParameter(1, discordId)
+            Optional.ofNullable(query.singleResult as Client)
+        } catch (e: NoResultException) {
+            Optional.empty()
+        }
     }
 
 }
