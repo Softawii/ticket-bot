@@ -4,9 +4,8 @@ import listener.MessageListener
 import org.apache.logging.log4j.LogManager
 import java.io.File
 import java.nio.file.Files
-import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.*
-import kotlin.io.path.absolutePathString
 
 class PropertiesUtil {
     companion object {
@@ -18,8 +17,8 @@ class PropertiesUtil {
         }
 
         fun loadPropertiesFile(): Properties {
-            val propertiesPath = Path.of(".${File.separator}application.properties")
-            LOGGER.info("Searching for properties file in: ${propertiesPath.absolutePathString()}")
+            val propertiesPath = Paths.get(".${File.separator}application${File.separator}application.properties")
+            LOGGER.info("Searching for properties file in: ${propertiesPath.toAbsolutePath().toString()}")
             val reader = Files.newBufferedReader(propertiesPath)
             reader.use {
                 val propertiesFile = Properties()
