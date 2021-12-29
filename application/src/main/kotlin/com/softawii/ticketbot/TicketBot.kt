@@ -2,6 +2,7 @@ package com.softawii.ticketbot
 
 import com.softawii.ticketbot.annotation.Argument
 import com.softawii.ticketbot.annotation.Command
+import com.softawii.ticketbot.internal.CommandHandler
 import com.softawii.ticketbot.listener.MessageListener
 import com.softawii.ticketbot.listener.ReadyListener
 import com.softawii.ticketbot.util.AnnotationUtil
@@ -40,7 +41,7 @@ class TicketBot {
                         val commandAnnotation =
                             method.declaredAnnotations.firstOrNull { annotation -> annotation is Command } as Command
                         val commandArguments = method.declaredAnnotations.filterIsInstance<Argument>()
-                        val (commandName: String, commandData) = processCommandAnnotations(
+                        val (commandName: String, commandData: CommandData) = processCommandAnnotations(
                             commandArguments,
                             commandAnnotation,
                             method
@@ -48,13 +49,13 @@ class TicketBot {
 
                         if (MessageListener.COMMANDS.containsKey(commandName)) {
                             LOGGER.fatal("Command $commandName is duplicated." +
-                                    "Found in classes: ${MessageListener.COMMANDS[commandName]!!.declaringClass} and ${method.declaringClass}")
+                                    "Found in classes: ${MessageListener.COMMANDS[commandName]!!.getMethodPath()} and ${method.declaringClass.name}.${method.name}()")
                             exitProcess(-1)
                         }
                         commands.add(commandData)
 
 
-                        MessageListener.COMMANDS[commandName] = method
+                        MessageListener.COMMANDS[commandName] = CommandHandler(commandAnnotation.permissions.asList(), method, commandAnnotation.environment)
                     }
                 }
                 jda.updateCommands().addCommands(commands).queue()
