@@ -2,6 +2,8 @@ package com.softawii.ticketbot.service
 
 import com.softawii.ticketbot.entity.Client
 import com.softawii.ticketbot.entity.Ticket
+import net.dv8tion.jda.api.JDA
+import net.dv8tion.jda.api.Permission
 import org.apache.logging.log4j.LogManager
 
 object DiscordTicketService: TicketService {
@@ -9,6 +11,17 @@ object DiscordTicketService: TicketService {
     private val LOGGER = LogManager.getLogger(DiscordTicketService.javaClass)
     private val clientRepository = ClientRepository.getInstance()
     private val ticketRepository = TicketRepository.getInstance()
+
+    @JvmStatic
+    fun getInviteLink(jda: JDA): String {
+        val clientId = jda.selfUser.idLong
+        val permission: Int = Permission.MESSAGE_SEND.offset
+        return String.format(
+            "https://discord.com/api/oauth2/authorize?client_id=%d&permissions=%d",
+            clientId,
+            permission
+        ) + "&scope=bot%20applications.commands"
+    }
 
     override fun archiveTicket(platformId: Long, ticketId: Long): String {
         val ticketOptional = ticketRepository.findById(ticketId)

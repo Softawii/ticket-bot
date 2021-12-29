@@ -1,20 +1,20 @@
 package com.softawii.ticketbot.command;
 
 import com.softawii.ticketbot.annotation.Command;
+import com.softawii.ticketbot.service.DiscordTicketService;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 
 import java.io.Serializable;
 
 public class Utils implements Serializable {
 
-    @Command
+    @Command(name = "aaa")
     public static String invite(SlashCommandEvent event) {
-        // TODO: "Comando ainda não foi implementado"
-        return "Comando ainda não foi implementado";
+        return DiscordTicketService.getInviteLink(event.getJDA());
     }
 
     @Command
-    public static String help(SlashCommandEvent event) {
+    public static String aaa(SlashCommandEvent event) {
         return "TODO: Invite";
     }
 
