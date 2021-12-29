@@ -8,13 +8,13 @@ import java.io.Serializable;
 
 public class Utils implements Serializable {
 
-    @Command(name = "aaa")
+    @Command
     public static String invite(SlashCommandEvent event) {
         return DiscordTicketService.getInviteLink(event.getJDA());
     }
 
     @Command
-    public static String aaa(SlashCommandEvent event) {
+    public static String help(SlashCommandEvent event) {
         return "TODO: Invite";
     }
 
