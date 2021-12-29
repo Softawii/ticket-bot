@@ -8,17 +8,17 @@ import java.io.Serializable;
 
 public class Utils implements Serializable {
 
-    @Command
+    @Command(description = "Convite do bot")
     public static String invite(SlashCommandEvent event) {
         return DiscordTicketService.getInviteLink(event.getJDA());
     }
 
-    @Command
+    @Command(description = "Ajuda")
     public static String help(SlashCommandEvent event) {
         return "TODO: Invite";
     }
 
-    @Command
+    @Command(description = "Pong")
     public static String ping(SlashCommandEvent event) {
         long time = System.currentTimeMillis();
 
