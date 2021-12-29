@@ -39,7 +39,7 @@ compileTestKotlin {
 }
 
 application {
-    mainClassName = 'MainKt'
+    mainClassName = 'com.softawii.ticketbot.MainKt'
 }
 
 jar {
