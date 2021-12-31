@@ -6,35 +6,52 @@ O bot é feito para auxiliar na sessão de suporte dos servidores. A ideia é ex
 
 <h2> 🔰 Manual de Uso </h2>
 
-### 🔹 Configuração das propriedades
+### 🔴 Requisitos:
+- JDK 11
+- PostgreSQL
 
-<!-- TODO -->
+### 🟢 Configuração das propriedades
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam luctus ornare dapibus. Suspendisse lectus magna, semper sit amet molestie eu, rhoncus et mauris. Suspendisse tempus eget mauris sit amet euismod. Nulla varius libero lacus, in dictum lorem dignissim at. Nulla dapibus ipsum nec lectus viverra fringilla. Cras maximus sed risus quis mollis. Nulla pretium arcu sed scelerisque viverra. Aliquam vulputate pulvinar quam, vitae interdum elit ultrices in. Aliquam luctus dignissim interdum. Vivamus nec consectetur mauris. Duis mi metus, feugiat vitae ultrices et, maximus interdum lacus. Mauris ut ipsum odio. Etiam non fringilla velit. Curabitur purus diam, tempus eu lorem vitae, vestibulum hendrerit nunc.
+O arquivo application.properties é onde as configurações do bot se encontram.
+Ele deve estar localizado na mesma pasta em que o `ticket-bot-VERSION.jar` ou o `gradlew/gradlew.bat` estiver.
 
-### 🔸 Botando para funcionar
+```properties
+discord.token=DISCORD_TOKEN
+hibernate.dialect=org.hibernate.dialect.PostgreSQL95Dialect
+hibernate.connection.driver_class=org.postgresql.Driver
+hibernate.connection.url=jdbc:postgresql://localhost:5432/database
+hibernate.connection.username=DATABASE_USERNAME
+hibernate.connection.password=DATABASE_PASSWORD
+hibernate.show_sql=false
+hibernate.format_sql=true
+hibernate.hbm2ddl.auto=create
+```
 
-<!-- TODO -->
+### 🔵 Botando para funcionar
 
-Nam pulvinar ligula eu luctus ultrices. Morbi fringilla feugiat rhoncus. Nam dolor nisi, feugiat eu ante a, pretium commodo odio. Fusce sagittis lacinia sapien ac luctus. Phasellus pretium ipsum dui, eget porta diam ultrices eget. Vivamus lobortis maximus libero, ornare porttitor sapien feugiat vel. Pellentesque mollis metus id velit accumsan dignissim nec eget felis. Nullam pellentesque sodales odio. Ut lectus eros, faucibus in ornare sed, elementum quis lectus. Suspendisse elit lacus, ornare vel pretium sed, consectetur ac metus. Integer tempor tempus elit eget fermentum. Quisque nec libero non elit posuere viverra.
+```shell
+# Para executar o bot diretamente do código fonte
+./gradlew run
 
-<!-- COLABORADORES -->
+# Para gerar o executável .jar
+./gradlew jar
 
-<br>
+# Para executar o .jar
+java -jar ticket-bot-VERSION.jar
+```
+
+OBS: Executar na pasta raiz do repositório
 
 <h2> <b> ✅ Para Colaboradores </b> </h2>
 
 <h3>  <b> 👩‍💻 Padrões de Desenvolvimento 👩‍💻 </b> <sup> pós alpha </sup> </h3>
 
-1. [Boas Práticas em Kotlin](./doc/01-kotlin.md)
+1. [Boas Práticas de Código](./doc/01-code.md)
 2. [Padrão das Issues](./doc/02-issues.md)
 3. [Padrão dos Commits e PRs](./doc/03-commit-pr.md)
 4. [Contato dos Desenvolvedores](./doc/04-maintainers.md)
-5. [Contribuição de Terceiros](05-third-party-contribution)
+5. [Contribuição de Terceiros](./doc/05-third-party-contribution)
+
+<!-- COLABORADORES -->
 
 <br>
-
-<!-- Manual do Kotlin -->
-
-
-  
