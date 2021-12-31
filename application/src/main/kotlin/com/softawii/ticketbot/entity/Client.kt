@@ -12,10 +12,10 @@ data class Client(
     @Column
     var discordId:Long?,
 
-    @OneToOne(cascade = [CascadeType.MERGE])
+    @OneToOne(cascade = [CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH])
     var activeTicket: Ticket?,
 
-    @OneToMany(mappedBy = "client", cascade = [CascadeType.MERGE], fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "client", cascade = [CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH], fetch = FetchType.LAZY)
     var tickets: MutableList<Ticket>?
 ) {
     constructor() : this(null,null,null,null)

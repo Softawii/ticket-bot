@@ -12,7 +12,7 @@ data class Ticket(
     @ManyToOne
     var client: Client?,
 
-    @OneToMany(mappedBy = "ticket", cascade = [CascadeType.MERGE], fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "ticket", cascade = [CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH], fetch = FetchType.LAZY)
     var messages: MutableList<Message> = ArrayList(),
 
     @Column
