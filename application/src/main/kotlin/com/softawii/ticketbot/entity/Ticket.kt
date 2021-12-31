@@ -4,7 +4,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "ticket")
-class Ticket(
+data class Ticket(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
