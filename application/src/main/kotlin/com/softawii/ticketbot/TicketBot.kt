@@ -19,6 +19,7 @@ import kotlin.system.exitProcess
 class TicketBot {
     companion object {
         val LOGGER = LogManager.getLogger(Companion::class.java)
+        private lateinit var arguments: Set<String>
 
         private fun initAvailableCommands(pkgName: String, jda: JDA) {
             val commandClasses = ReflectionUtil.getClassesByPackageName(pkgName)
@@ -76,8 +77,21 @@ class TicketBot {
             return Pair(commandName, commandData)
         }
 
-        fun start() {
+        fun start(args: Array<String>) {
+            parseArguments(args)
             startJDA()
+        }
+
+        private fun parseArguments(args: Array<String>) {
+            arguments = HashSet(args.asList())
+        }
+
+        fun containsArgument(arg: String): Boolean {
+            return arguments.contains(arg)
+        }
+
+        fun isDeveloperModeEnabled(): Boolean {
+            return arguments.contains("dev")
         }
 
         private fun startJDA() {
