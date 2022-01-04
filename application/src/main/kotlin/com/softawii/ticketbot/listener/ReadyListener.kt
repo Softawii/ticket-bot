@@ -1,5 +1,6 @@
 package com.softawii.ticketbot.listener
 
+import com.softawii.ticketbot.TicketBot
 import com.softawii.ticketbot.service.DiscordTicketService
 import net.dv8tion.jda.api.events.GenericEvent
 import net.dv8tion.jda.api.events.ReadyEvent
@@ -22,8 +23,13 @@ class ReadyListener: EventListener {
                         "   ██║   ██║██║     ██╔═██╗ ██╔══╝     ██║       ██╔══██╗██║   ██║   ██║   \n" +
                         "   ██║   ██║╚██████╗██║  ██╗███████╗   ██║       ██████╔╝╚██████╔╝   ██║   \n" +
                         "   ╚═╝   ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝   ╚═╝       ╚═════╝  ╚═════╝    ╚═╝   \n" +
-                        "API is ready!\n" + DiscordTicketService.getInviteLink(event.jda)
+                        "API is ready! Invite link: " + DiscordTicketService.getInviteLink(event.jda)
             )
+            if (TicketBot.isDeveloperModeEnabled()) {
+                val guilds = event.jda.guilds
+                guilds.forEach { DiscordTicketService.setupServer(it.idLong) }
+                LOGGER.debug("[DEV-ONLY] Setting up joined servers")
+            }
         }
     }
 }
