@@ -5,18 +5,14 @@ import com.softawii.ticketbot.annotation.Command
 import com.softawii.ticketbot.internal.CommandHandler
 import com.softawii.ticketbot.listener.MessageListener
 import com.softawii.ticketbot.listener.ReadyListener
-import com.softawii.ticketbot.util.AnnotationUtil
+import com.softawii.ticketbot.util.JDAUtil.Companion.getOptionData
 import com.softawii.ticketbot.util.PropertiesUtil
+import com.softawii.ticketbot.util.ReflectionUtil
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.interactions.commands.build.CommandData
 import net.dv8tion.jda.api.interactions.commands.build.OptionData
 import org.apache.logging.log4j.LogManager
-import org.reflections.Reflections
-import org.reflections.scanners.Scanners
-import org.reflections.util.ClasspathHelper
-import org.reflections.util.ConfigurationBuilder
-import org.reflections.util.FilterBuilder
 import java.lang.reflect.Method
 import kotlin.system.exitProcess
 
@@ -25,15 +21,10 @@ class TicketBot {
         val LOGGER = LogManager.getLogger(Companion::class.java)
 
         private fun initAvailableCommands(pkgName: String, jda: JDA) {
-            val reflections = Reflections(
-                ConfigurationBuilder()
-                    .filterInputsBy(FilterBuilder().includePackage(pkgName))
-                    .setUrls(ClasspathHelper.forPackage(pkgName))
-                    .setScanners(Scanners.SubTypes.filterResultsBy { _ -> true })
-            )
+            val commandClasses = ReflectionUtil.getClassesByPackageName(pkgName)
 
             val commands = ArrayList<CommandData>()
-            reflections.getSubTypesOf(Object::class.java).forEach {
+            commandClasses.forEach {
                 LOGGER.debug("Found class: ${it.name}")
                 for (method in it.methods) {
                     if (method.isAnnotationPresent(Command::class.java)) {
@@ -71,7 +62,7 @@ class TicketBot {
 
             if (commandArguments.isNotEmpty()) {
                 for (argument in commandArguments) {
-                    val optionData = AnnotationUtil.getOptionData(argument)
+                    val optionData = getOptionData(argument)
                     optionDatas.add(optionData)
                 }
             }
