@@ -29,7 +29,6 @@ class TicketBot {
                 LOGGER.debug("Found class: ${it.name}")
                 for (method in it.methods) {
                     if (method.isAnnotationPresent(Command::class.java)) {
-                        LOGGER.debug("Adding command list: ${method.name}")
                         val commandAnnotation =
                             method.declaredAnnotations.firstOrNull { annotation -> annotation is Command } as Command
                         val commandArguments = method.declaredAnnotations.filterIsInstance<Argument>()
@@ -48,6 +47,8 @@ class TicketBot {
 
 
                         MessageListener.COMMANDS[commandName] = CommandHandler(commandAnnotation.permissions.asList(), method, commandAnnotation.environment)
+
+                        LOGGER.debug("Adding command to list: ${method.name}")
                     }
                 }
                 jda.updateCommands().addCommands(commands).queue()

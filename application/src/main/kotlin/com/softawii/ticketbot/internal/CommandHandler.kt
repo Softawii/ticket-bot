@@ -18,7 +18,7 @@ class CommandHandler(
         val ALLOWED_CHANNELS = listOf(TEXT, GUILD_PUBLIC_THREAD, GUILD_PRIVATE_THREAD)
     }
 
-    fun execute(event: SlashCommandEvent): String {
+    fun execute(event: SlashCommandEvent): String? {
         if (event.channelType == PRIVATE) {
             if (!isPrivateEnvironment()) {
                 return "Esse comando não pode ser executado em um canal privado"
@@ -41,13 +41,13 @@ class CommandHandler(
         return environment == Environment.SERVER || environment == Environment.BOTH
     }
 
-    private fun execute(event: SlashCommandEvent, user: User): String {
-        return method.invoke(null, event) as String
+    private fun execute(event: SlashCommandEvent, user: User): String? {
+        return method.invoke(null, event) as String?
     }
 
-    private fun execute(event: SlashCommandEvent, member: Member): String {
+    private fun execute(event: SlashCommandEvent, member: Member): String? {
         if (member.hasPermission(permissions)) {
-            return method.invoke(null, event) as String
+            return method.invoke(null, event) as String?
         } else {
             return "Você não tem permissões (${requiredPermissionsToString()}) suficientes para executar esse comando"
         }

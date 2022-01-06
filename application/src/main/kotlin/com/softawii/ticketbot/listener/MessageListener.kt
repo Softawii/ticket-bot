@@ -7,7 +7,6 @@ import net.dv8tion.jda.api.entities.ChannelType
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import net.dv8tion.jda.api.interactions.Interaction
-import net.dv8tion.jda.api.interactions.commands.OptionMapping
 import org.apache.logging.log4j.LogManager
 
 class MessageListener: ListenerAdapter() {
@@ -37,10 +36,11 @@ class MessageListener: ListenerAdapter() {
     }
 
     override fun onSlashCommand(event: SlashCommandEvent) {
-        val user = event.user
-        val options: List<OptionMapping> = event.options
+
 
         val command = event.name
+        LOGGER.debug("Received slash command: $command")
+
 
         val result =  COMMANDS[command]!!.execute(event) as String?
         if (result != null) event.reply(result).queue()
