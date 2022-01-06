@@ -2,10 +2,12 @@ package com.softawii.ticketbot.command;
 
 
 import com.softawii.ticketbot.annotation.Argument;
+import com.softawii.ticketbot.annotation.Arguments;
 import com.softawii.ticketbot.annotation.Command;
 import com.softawii.ticketbot.annotation.CommandClass;
 import com.softawii.ticketbot.service.DiscordTicketService;
 import com.softawii.ticketbot.service.TicketService;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -20,14 +22,15 @@ public class Tickets {
 
     @Command(name = "create-ticket", description = "Cria um novo ticket")
     public static String createTicket(SlashCommandEvent event) {
-        String response = ticketService.createTicket(event.getUser().getIdLong());
+        Guild guild = event.getGuild();
+        String response = ticketService.createTicket(event.getUser().getIdLong(), guild.getIdLong());
         event.reply(response).queue();
 
         return null;
     }
 
     @Command(name = "switch-ticket", description = "Troca para um ticket já existente")
-    @Argument(type = OptionType.INTEGER, name = "ticket-id", description = "Ticket ID", isRequired = true)
+    @Arguments(@Argument(type = OptionType.INTEGER, name = "ticket-id", description = "Ticket ID", isRequired = true))
     public static String switchTicket(SlashCommandEvent event) {
         return "Comando ainda não foi implementado";
     }
@@ -51,7 +54,9 @@ public class Tickets {
 
     @Command(name = "send-message", description = "Envia uma mensagem para um ticket")
     @Argument(type = OptionType.INTEGER, name = "ticket-id", description = "Ticket ID", isRequired = true)
+    @Argument(type = OptionType.STRING, name = "message", description = "Mensagem", isRequired = true)
     public static String sendMessage(SlashCommandEvent event) {
+        event.getOptions().forEach(System.out::println);
         return "Comando ainda não foi implementado";
     }
 
