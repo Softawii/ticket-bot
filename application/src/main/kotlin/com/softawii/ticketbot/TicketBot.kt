@@ -1,6 +1,7 @@
 package com.softawii.ticketbot
 
 import com.softawii.ticketbot.annotation.Argument
+import com.softawii.ticketbot.annotation.Arguments
 import com.softawii.ticketbot.annotation.Command
 import com.softawii.ticketbot.internal.CommandHandler
 import com.softawii.ticketbot.listener.MessageListener
@@ -31,7 +32,16 @@ class TicketBot {
                     if (method.isAnnotationPresent(Command::class.java)) {
                         val commandAnnotation =
                             method.declaredAnnotations.firstOrNull { annotation -> annotation is Command } as Command
-                        val commandArguments = method.declaredAnnotations.filterIsInstance<Argument>()
+                        var commandArguments = method.declaredAnnotations.filterIsInstance<Argument>()
+
+                        if(commandArguments.isEmpty()) {
+                            val arguments = method.declaredAnnotations.firstOrNull { annotation -> annotation is Arguments } as Arguments?
+
+                            if(arguments != null) {
+                               commandArguments  = arguments.value.toList();
+                            }
+                        }
+
                         val (commandName: String, commandData: CommandData) = processCommandAnnotations(
                             commandArguments,
                             commandAnnotation,

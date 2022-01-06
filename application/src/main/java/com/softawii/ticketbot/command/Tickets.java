@@ -30,7 +30,7 @@ public class Tickets {
     }
 
     @Command(name = "switch-ticket", description = "Troca para um ticket já existente")
-    @Arguments(@Argument(type = OptionType.INTEGER, name = "ticket-id", description = "Ticket ID", isRequired = true))
+    @Argument(type = OptionType.INTEGER, name = "ticket-id", description = "Ticket ID", isRequired = true)
     public static String switchTicket(SlashCommandEvent event) {
         return "Comando ainda não foi implementado";
     }
@@ -53,8 +53,10 @@ public class Tickets {
     }
 
     @Command(name = "send-message", description = "Envia uma mensagem para um ticket")
-    @Argument(type = OptionType.INTEGER, name = "ticket-id", description = "Ticket ID", isRequired = true)
-    @Argument(type = OptionType.STRING, name = "message", description = "Mensagem", isRequired = true)
+    @Arguments({
+            @Argument(type = OptionType.INTEGER, name = "ticket-id", description = "Ticket ID", isRequired = true),
+            @Argument(type = OptionType.STRING, name = "message", description = "Mensagem", isRequired = true)
+    })
     public static String sendMessage(SlashCommandEvent event) {
         event.getOptions().forEach(System.out::println);
         return "Comando ainda não foi implementado";
