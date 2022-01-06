@@ -7,19 +7,20 @@ import javax.persistence.*
 data class Ticket(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long?,
+    var id: Long? = null,
 
     @ManyToOne
-    var client: Client?,
+    var client: Client? = null,
 
     @OneToMany(mappedBy = "ticket", cascade = [CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH], fetch = FetchType.LAZY)
     var messages: MutableList<Message> = ArrayList(),
 
     @Column
-    var isArchived: Boolean = false
-) {
+    var isArchived: Boolean = false,
 
-    constructor() : this(null,null)
+    @OneToOne(cascade = [CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH])
+    var discordServer: DiscordServer? = null
+) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
