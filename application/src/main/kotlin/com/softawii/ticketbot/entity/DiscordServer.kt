@@ -3,7 +3,7 @@ package com.softawii.ticketbot.entity
 import javax.persistence.*
 
 @Entity
-@Table(name = "server")
+@Table(name = "discordserver")
 data class DiscordServer(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,8 +12,8 @@ data class DiscordServer(
     @Column
     var serverId: Long? = null,
 
-    @Column
-    var categoryId: Long? = null
+    @ElementCollection
+    var categoryId: List<Long>? = null
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
