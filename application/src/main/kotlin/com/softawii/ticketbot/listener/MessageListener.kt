@@ -4,6 +4,7 @@ import com.softawii.ticketbot.internal.CommandHandler
 import com.softawii.ticketbot.service.DiscordTicketService
 import com.softawii.ticketbot.service.TicketService
 import net.dv8tion.jda.api.entities.ChannelType
+import net.dv8tion.jda.api.events.guild.GuildJoinEvent
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import net.dv8tion.jda.api.interactions.Interaction
@@ -35,14 +36,16 @@ class MessageListener: ListenerAdapter() {
         }
     }
 
+    override fun onGuildJoin(event: GuildJoinEvent) {
+        val guild = event.guild
+        ticketService.setupServer(guild.idLong)
+    }
+
     override fun onSlashCommand(event: SlashCommandEvent) {
-
-
         val command = event.name
         LOGGER.debug("Received slash command: $command")
 
-
-        val result =  COMMANDS[command]!!.execute(event) as String?
+        val result = COMMANDS[command]!!.execute(event)
         if (result != null) event.reply(result).queue()
     }
 }
