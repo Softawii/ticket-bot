@@ -3,12 +3,18 @@ package com.softawii.ticketbot.command;
 import com.softawii.ticketbot.annotation.Argument;
 import com.softawii.ticketbot.annotation.Command;
 import com.softawii.ticketbot.annotation.CommandClass;
+import com.softawii.ticketbot.exception.CategoryAlreadyAssignedException;
+import com.softawii.ticketbot.exception.CategoryUnassignedException;
+import com.softawii.ticketbot.service.DiscordServerRepository;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 
 @CommandClass
 public class Config {
+
+    private static DiscordServerRepository discordServerRepository = DiscordServerRepository.Companion.getInstance();
+
 
     @Command(name="set", description = "Set a chat to a specified category")
     @Argument(type= OptionType.BOOLEAN, name="support", description = "Set Current Chat as Support", isRequired = true)
@@ -24,11 +30,18 @@ public class Config {
             return "This channel is not in a category";
         }
 
-        String content = category.getIdLong() + " : " + guildId;
+        Long serverId = event.getGuild().getIdLong();
 
-        if(supportChat) event.reply("Que papinho hein" + content + "\n").queue();
-        else event.reply(" sem papinho").queue();
-
-        return null;
+        try {
+            discordServerRepository.setSupportChat(serverId, category, supportChat);
+            if(supportChat) {
+                return "Successfully set " + category.getName() + " as support chat";
+            } else {
+                return "Successfully unset " + category.getName() + " as support chat";
+            }
+        }
+        catch(CategoryAlreadyAssignedException | CategoryUnassignedException e) {
+            return e.getMessage();
+        }
     }
 }

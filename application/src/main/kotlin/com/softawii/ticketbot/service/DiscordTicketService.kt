@@ -106,7 +106,7 @@ object DiscordTicketService: TicketService {
             }
             return "O servidor já foi configurado anteriormente"
         }
-        val discordServer = DiscordServer(null, serverId, null)
+        val discordServer = DiscordServer(null, serverId)
         discordServerRepository.save(discordServer)
 
         return "Servidor configurado com sucesso. Defina uma categoria para que os tickets possam ser criados"

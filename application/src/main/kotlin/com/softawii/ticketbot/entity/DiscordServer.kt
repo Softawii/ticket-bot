@@ -13,7 +13,7 @@ data class DiscordServer(
     var serverId: Long? = null,
 
     @ElementCollection
-    var categoryId: List<Long>? = null
+    var categoryId: MutableSet<Long> = HashSet()
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
