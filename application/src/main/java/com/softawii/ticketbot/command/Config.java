@@ -6,6 +6,7 @@ import com.softawii.ticketbot.annotation.CommandClass;
 import com.softawii.ticketbot.exception.CategoryAlreadyAssignedException;
 import com.softawii.ticketbot.exception.CategoryUnassignedException;
 import com.softawii.ticketbot.service.DiscordServerRepository;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -16,7 +17,7 @@ public class Config {
     private static DiscordServerRepository discordServerRepository = DiscordServerRepository.Companion.getInstance();
 
 
-    @Command(name="set", description = "Set a chat to a specified category")
+    @Command(name="set", description = "Set a chat to a specified category", permissions = {Permission.ADMINISTRATOR})
     @Argument(type= OptionType.BOOLEAN, name="support", description = "Set Current Chat as Support", isRequired = true)
     public static String set(SlashCommandEvent event) {
 
