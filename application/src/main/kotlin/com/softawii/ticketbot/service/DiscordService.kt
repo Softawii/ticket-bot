@@ -8,7 +8,11 @@ import com.softawii.ticketbot.exception.CategoryUnassignedException
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Category
+import net.dv8tion.jda.api.entities.Guild
+import net.dv8tion.jda.api.entities.TextChannel
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
 import org.apache.logging.log4j.LogManager
+import java.util.*
 
 object DiscordService: TicketService {
 
@@ -80,8 +84,11 @@ object DiscordService: TicketService {
     }
 
     override fun createTicket(platformId: Long, serverId: Long): String {
+
+        // * Creating ticket
         val clientOptional = clientRepository.findByDiscordId(platformId)
         val client: Client
+
         if (clientOptional.isEmpty) {
             client = clientRepository.createNewClient(Client(null, platformId, null, null))
             val ticket = client.activeTicket!!
@@ -94,11 +101,53 @@ object DiscordService: TicketService {
         if (serverOptional.isEmpty || serverOptional.get().categoryId == null) {
             return "O servidor ainda não foi configurado corretamente"
         }
+
+        // * Getting Ticket
         val ticket = ticketRepository.save(Ticket(id = null, client = client, discordServer = serverOptional.get()))
         client.activeTicket = ticket
         clientRepository.update(client)
 
         return "O seu novo ticket tem o ID: ${ticket.id}. Para enviar alguma mensagem para esse ticket utilize `/send-message ${ticket.id} MENSAGEM`"
+    }
+
+    fun redirectTicket(event: SlashCommandEvent): String? {
+
+        var returnMessage: String? = null
+
+        val clientOptional = clientRepository.findByDiscordId(event.user.idLong)
+        val serverOptional = discordServerRepository.findByServerId(event.guild!!.idLong)
+        clientOptional.ifPresentOrElse( { client ->
+            serverOptional.ifPresent { server ->
+                val category = this.getRandomCategory(server)
+                if(category != null) {
+                    val channel = this.getRandomChannel(event.guild!!, category)
+
+                    channel?.sendMessage("Ticket ${client.activeTicket!!.id} from user <@${event.user.idLong}> redirected to this channel")?.queue()
+                } else {
+                    returnMessage = "Server is not configured correctly"
+                }
+            }
+        }, {
+            returnMessage = "Something went wrong, please contact the bot owner"
+        })
+
+        return returnMessage
+    }
+
+    fun getRandomCategory(server: DiscordServer): Long? {
+        val categories = server.categoryId
+        return if (categories.isEmpty()) {
+            null
+        } else {
+            categories.random().toLong()
+        }
+    }
+
+    fun getRandomChannel(guild: Guild, categoryId: Long): TextChannel? {
+        val category = guild.getCategoryById(categoryId)
+        val channels = category?.textChannels
+        val r = Random()
+        return channels?.get(r.nextInt(channels.size))
     }
 
     fun setSupportChat(serverId: Long, category: Category, supportChat: Boolean) {

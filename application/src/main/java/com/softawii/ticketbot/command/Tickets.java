@@ -24,7 +24,11 @@ public class Tickets {
     public static String createTicket(SlashCommandEvent event) {
         Guild guild = event.getGuild();
         String response = ticketService.createTicket(event.getUser().getIdLong(), guild.getIdLong());
-        event.reply(response).queue();
+        if(response != null) event.reply(response).queue();
+
+        DiscordService discordService = DiscordService.INSTANCE;
+        response = discordService.redirectTicket(event);
+        if (response != null) event.getChannel().sendMessage(response).queue();
 
         return null;
     }
