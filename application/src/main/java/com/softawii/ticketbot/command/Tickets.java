@@ -5,7 +5,7 @@ import com.softawii.ticketbot.annotation.Argument;
 import com.softawii.ticketbot.annotation.Arguments;
 import com.softawii.ticketbot.annotation.Command;
 import com.softawii.ticketbot.annotation.CommandClass;
-import com.softawii.ticketbot.service.DiscordTicketService;
+import com.softawii.ticketbot.service.DiscordService;
 import com.softawii.ticketbot.service.TicketService;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
@@ -18,7 +18,7 @@ import java.util.Objects;
 @CommandClass
 public class Tickets {
 
-    private static final TicketService ticketService = DiscordTicketService.INSTANCE;
+    private static final TicketService ticketService = DiscordService.INSTANCE;
 
     @Command(name = "create-ticket", description = "Cria um novo ticket")
     public static String createTicket(SlashCommandEvent event) {

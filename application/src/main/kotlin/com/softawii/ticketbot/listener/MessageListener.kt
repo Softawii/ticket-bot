@@ -1,7 +1,7 @@
 package com.softawii.ticketbot.listener
 
 import com.softawii.ticketbot.internal.CommandHandler
-import com.softawii.ticketbot.service.DiscordTicketService
+import com.softawii.ticketbot.service.DiscordService
 import com.softawii.ticketbot.service.TicketService
 import net.dv8tion.jda.api.entities.ChannelType
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent
@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager
 
 class MessageListener: ListenerAdapter() {
 
-    private val ticketService: TicketService = DiscordTicketService
+    private val ticketService: TicketService = DiscordService
 
     companion object {
         val LOGGER = LogManager.getLogger(Companion::class.java)

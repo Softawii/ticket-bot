@@ -5,5 +5,5 @@ interface TicketService {
     fun archiveCurrentTicket(platformId: Long): String
     fun activeTicket(platformId: Long): String
     fun createTicket(platformId: Long, serverId:Long): String
-    fun setupServer(serverId: Long): String
+    fun setupServer(serverId: Long, categoryId: Long? = null): String
 }

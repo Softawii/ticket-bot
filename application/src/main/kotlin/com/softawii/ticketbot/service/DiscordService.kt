@@ -3,13 +3,16 @@ package com.softawii.ticketbot.service
 import com.softawii.ticketbot.entity.Client
 import com.softawii.ticketbot.entity.DiscordServer
 import com.softawii.ticketbot.entity.Ticket
+import com.softawii.ticketbot.exception.CategoryAlreadyAssignedException
+import com.softawii.ticketbot.exception.CategoryUnassignedException
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.Permission
+import net.dv8tion.jda.api.entities.Category
 import org.apache.logging.log4j.LogManager
 
-object DiscordTicketService: TicketService {
+object DiscordService: TicketService {
 
-    private val LOGGER = LogManager.getLogger(DiscordTicketService.javaClass)
+    private val LOGGER = LogManager.getLogger(DiscordService.javaClass)
     private val clientRepository = ClientRepository.getInstance()
     private val ticketRepository = TicketRepository.getInstance()
     private val discordServerRepository = DiscordServerRepository.getInstance()
@@ -98,7 +101,27 @@ object DiscordTicketService: TicketService {
         return "O seu novo ticket tem o ID: ${ticket.id}. Para enviar alguma mensagem para esse ticket utilize `/send-message ${ticket.id} MENSAGEM`"
     }
 
-    override fun setupServer(serverId: Long): String {
+    fun setSupportChat(serverId: Long, category: Category, supportChat: Boolean) {
+        discordServerRepository.findByServerId(serverId).ifPresentOrElse({
+
+            if(it.categoryId.contains(category.idLong)) {
+                if (supportChat) throw CategoryAlreadyAssignedException("Category ${category.name} is already assigned.")
+            } else {
+                if (!supportChat) throw CategoryUnassignedException("Category ${category.name} is not assigned.")
+            }
+
+            if(supportChat) {
+                it.categoryId.add(category.idLong)
+            } else {
+                it.categoryId.remove(category.idLong)
+            }
+            discordServerRepository.update(it)
+        }, {
+            this.setupServer(serverId, category.idLong)
+        })
+    }
+
+    override fun setupServer(serverId: Long, categoryId: Long?): String {
         val discordServerOptional = discordServerRepository.findByServerId(serverId)
         if (discordServerOptional.isPresent) {
             if (discordServerOptional.get().categoryId == null) {

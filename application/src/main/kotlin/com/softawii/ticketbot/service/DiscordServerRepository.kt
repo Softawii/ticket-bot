@@ -1,10 +1,7 @@
 package com.softawii.ticketbot.service
 
 import com.softawii.ticketbot.entity.DiscordServer
-import com.softawii.ticketbot.exception.CategoryAlreadyAssignedException
-import com.softawii.ticketbot.exception.CategoryUnassignedException
 import com.softawii.ticketbot.util.HibernateUtil
-import net.dv8tion.jda.api.entities.Category
 import org.hibernate.SessionFactory
 import java.util.*
 import javax.persistence.NoResultException
@@ -73,26 +70,5 @@ class DiscordServerRepository : Repository<DiscordServer> {
         }
     }
 
-    fun setSupportChat(serverId: Long, category: Category, supportChat: Boolean) {
-        findByServerId(serverId).ifPresentOrElse({
-
-            if(it.categoryId.contains(category.idLong)) {
-                if (supportChat) throw CategoryAlreadyAssignedException("Category ${category.name} is already assigned.")
-            } else {
-                if (!supportChat) throw CategoryUnassignedException("Category ${category.name} is not assigned.")
-            }
-
-            if(supportChat) {
-                it.categoryId.add(category.idLong)
-            } else {
-                it.categoryId.remove(category.idLong)
-            }
-            update(it)
-        }, {
-            val discordServer = DiscordServer(null, serverId)
-            discordServer.categoryId.add(category.idLong)
-            save(discordServer)
-        })
-    }
 
 }
