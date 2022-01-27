@@ -112,7 +112,7 @@ object DiscordService: TicketService {
 
     fun redirectTicket(event: SlashCommandEvent): String? {
 
-        var returnMessage: String? = null
+        var returnMessage: String? = "Something went wrong, please contact the bot owner"
 
         val clientOptional = clientRepository.findByDiscordId(event.user.idLong)
         val serverOptional = discordServerRepository.findByServerId(event.guild!!.idLong)
@@ -123,6 +123,7 @@ object DiscordService: TicketService {
                     val channel = this.getRandomChannel(event.guild!!, category)
 
                     channel?.sendMessage("Ticket ${client.activeTicket!!.id} from user <@${event.user.idLong}> redirected to this channel")?.queue()
+                    returnMessage = null
                 } else {
                     returnMessage = "Server is not configured correctly"
                 }

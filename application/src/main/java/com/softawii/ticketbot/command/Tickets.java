@@ -23,12 +23,19 @@ public class Tickets {
     @Command(name = "create-ticket", description = "Cria um novo ticket")
     public static String createTicket(SlashCommandEvent event) {
         Guild guild = event.getGuild();
-        String response = ticketService.createTicket(event.getUser().getIdLong(), guild.getIdLong());
-        if(response != null) event.reply(response).queue();
+
+        final String response = ticketService.createTicket(event.getUser().getIdLong(), guild.getIdLong());
+
 
         DiscordService discordService = DiscordService.INSTANCE;
-        response = discordService.redirectTicket(event);
-        if (response != null) event.getChannel().sendMessage(response).queue();
+        final String response2 = discordService.redirectTicket(event);
+
+        if (response2 != null) {
+            event.reply(response2).queue();
+        } else {
+            event.getUser().openPrivateChannel().flatMap(channel -> channel.sendMessage(response)).queue();
+            event.reply("Ticket criado com sucesso!, Olhe seu privado").queue();
+        }
 
         return null;
     }
